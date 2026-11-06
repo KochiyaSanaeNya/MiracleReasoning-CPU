@@ -1,0 +1,19 @@
+name: CPU OpenCL
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  pocl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU OpenCL implementation
+        run: sudo apt-get update && sudo apt-get install -y pocl-opencl-icd ocl-icd-libopencl1
+      - run: python -m pip install -e '.[test]'
+      - name: Require a CPU device
+        run: python -c 'from miracle_reasoning import list_devices; assert any(d.kind == "cpu" for d in list_devices())'
+      - run: python -m miracle_reasoning devices
+      - run: python -m pytest -q

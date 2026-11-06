@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "miracle-reasoning"
+version = "0.1.0"
+description = "Portable OpenCL CPU inference for the Miracle model family"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+export = ["torch>=2.1", "PyYAML>=6"]
+text = ["sentencepiece>=0.2", "tokenizers>=0.20"]
+
+[project.scripts]
+miracle-reasoning = "miracle_reasoning.cli:main"
+
+[tool.setuptools.package-data]
+miracle_reasoning = ["kernels.cl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
